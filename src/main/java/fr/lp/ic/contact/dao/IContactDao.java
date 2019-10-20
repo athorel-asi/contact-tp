@@ -6,43 +6,43 @@ import java.util.Optional;
 import fr.lp.ic.contact.model.Contact;
 
 /**
- * Interface d'accès aux données de type contact 
+ * Interface d'accÃ¨s aux donnÃ©es de type contact 
  * @author athorel
  *
  */
 public interface IContactDao {
 
 	/**
-	 * Récupère la liste des contacts 
+	 * RÃ©cupÃ©re la liste des contacts 
 	 * @return liste des contacts 
 	 */
 	List<Contact> findAll();
 	
 	/**
-	 * Récupère un contact a partir de son nom 
+	 * RÃ©cupÃ©re un contact a partir de son nom 
 	 * @param name nom du contact 
 	 * @return contact 
 	 */
 	Optional<Contact> findByName(String name);
 	
 	/**
-	 * Permet de créer un contact 
-	 * @param contact contact a créer 
-	 * @return <code>true</code> si la création s'est correctement passée 
+	 * Permet de crÃ©er un contact 
+	 * @param contact contact a crÃ©er 
+	 * @return <code>true</code> si la crÃ©ation s'est correctement passÃ©e 
 	 */
 	boolean save(Contact contact);
 
 	/**
-	 * Permet de mettre un jour un contact 
-	 * @param contact contact a mettre à jour 
-	 * @return <code>true</code> si la mise à jour s'est correctement passée 
+	 * Permet de mettre Ã  jour un contact 
+	 * @param contact contact a mettre Ã  jour 
+	 * @return <code>true</code> si la mise Ã  jour s'est correctement passÃ©e 
 	 */
 	boolean update(String name, Contact contact);
 	
 	/**
 	 * Permet de supprimer un contact 
 	 * @param name nom du contact a supprimer 
-	 * @return <code>true</code> si la supression s'est bien passée
+	 * @return <code>true</code> si la supression s'est bien passÃ©e
 	 */
 	boolean delete(String name);
 	

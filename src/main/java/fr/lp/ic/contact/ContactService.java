@@ -9,7 +9,7 @@ import fr.lp.ic.contact.exception.ContactNotFoundException;
 import fr.lp.ic.contact.model.Contact;
 
 /**
- * Service - Méthodes a développer ici
+ * Service - MÃ©thodes a dÃ©velopper ici
  * 
  * @author athorel
  *
@@ -20,16 +20,16 @@ public class ContactService {
 	private IContactDao contactDao = new ContactDaoImpl();
 
 	/**
-	 * Développer ici la méthode qui retourne une liste de contact, trié par le nom
+	 * DÃ©velopper ici la mÃ©thode qui retourne une liste de contact, triÃ© par le nom
 	 * 
-	 * @return list des contact triés
+	 * @return list des contact triÃ©s
 	 */
 	public List<String> listAll() {
 		return null;
 	}
 
 	/**
-	 * Développer ici la méthode permettant d'afficher le nombre de contact
+	 * DÃ©velopper ici la mÃ©thode permettant d'afficher le nombre de contact
 	 * 
 	 * @return nombre de contact
 	 */
@@ -38,32 +38,32 @@ public class ContactService {
 	}
 
 	/**
-	 * Développer ici la méthode permettant d'ajouter un nouveau contact
+	 * DÃ©velopper ici la mÃ©thode permettant d'ajouter un nouveau contact
 	 * 
-	 * @param name        le nom doit être compris entre 3 et 40 caractères
-	 * @param phoneNumber le numéro de téléphone doit commencer par 02 et contenir
+	 * @param name        le nom doit Ãªtre compris entre 3 et 40 caractÃ©res
+	 * @param phoneNumber le numÃ©ro de tÃ©lÃ©phone doit commencer par 02 et contenir
 	 *                    10 chiffres
-	 * @param email       l'email doit contenir au mois 5 caractères et avoir un @
+	 * @param email       l'email doit contenir au mois 5 caractÃ©res et avoir un @
 	 *                    et un .
-	 * @throws ContactException Le nom doit être unique, si il est déjà existant on
-	 *                          lève une ContactException
+	 * @throws ContactException Le nom doit Ãªtre unique, si il est dÃ©jÃ  existant on
+	 *                          lÃ¨ve une ContactException
 	 */
 	public void newContact(String name, String phoneNumber, String email) throws ContactException {
 
 	}
 
 	/**
-	 * Développer ici la méthode permettant de mettre à jour un contact
+	 * DÃ©velopper ici la mÃ©thode permettant de mettre Ã  jour un contact
 	 * 
-	 * @param name        le nom doit être compris entre 3 et 40 caractères
-	 * @param phoneNumber le numéro de téléphone doit commencer par 02 et contenir
+	 * @param name        le nom doit Ãªtre compris entre 3 et 40 caractÃ¨res
+	 * @param phoneNumber le numÃ©ro de tÃ©lÃ©phone doit commencer par 02 et contenir
 	 *                    10 chiffres
-	 * @param email       l'email doit contenir au mois 5 caractères et avoir un @
+	 * @param email       l'email doit contenir au mois 5 caractÃ©res et avoir un @
 	 *                    et un .
-	 * @throws ContactException         Le nom doit être unique, si il est déjà
-	 *                                  existant on lève une ContactException
+	 * @throws ContactException         Le nom doit Ãªtre unique, si il est dÃ©jÃ 
+	 *                                  existant on lÃ¨ve une ContactException
 	 *                                  
-	 * @throws ContactNotFoundException Si l'utilisateur n'existe pas on lève une
+	 * @throws ContactNotFoundException Si l'utilisateur n'existe pas on lÃ¨ve une
 	 *                                  ContactNotFoundException
 	 */
 	public void updateContact(String name, String newName, String phoneNumber, String email)
@@ -72,10 +72,10 @@ public class ContactService {
 	}
 
 	/**
-	 * Développer ici la méthode permettant de supprimer un contact
+	 * DÃ©velopper ici la mÃ©thode permettant de supprimer un contact
 	 * 
 	 * @param name        le nom de l'utilisateur a supprimer                                 
-	 * @throws ContactNotFoundException Si l'utilisateur n'existe pas on lève une
+	 * @throws ContactNotFoundException Si l'utilisateur n'existe pas on lÃ¨ve une
 	 *                                  ContactNotFoundException
 	 */
 	public void deleteContact(String name) throws ContactException {
