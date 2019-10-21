@@ -34,6 +34,7 @@ public class ContactDaoImpl implements IContactDao {
 	public boolean update(String name, Contact contact) {
 		Optional<Contact> foundContact = findWithName(name);
 		foundContact.ifPresent(x->{
+			x.setName(contact.getName());
 			x.setPhone(contact.getPhone());
 			x.setEmail(contact.getEmail());
 		});	
