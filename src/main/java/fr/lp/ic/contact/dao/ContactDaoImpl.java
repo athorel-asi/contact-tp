@@ -1,11 +1,10 @@
 package fr.lp.ic.contact.dao;
 
+import fr.lp.ic.contact.model.Contact;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import fr.lp.ic.contact.model.Contact;
 /**
  * Implementation de contact 
  * NE PAS MODIFIER 
@@ -13,11 +12,10 @@ import fr.lp.ic.contact.model.Contact;
  */
 public class ContactDaoImpl implements IContactDao {
 
-	List<Contact> contacts = new ArrayList<Contact>();
+	private List<Contact> contacts = new ArrayList<>();
 
 	public List<Contact> findAll() {
-		return contacts.stream()//
-				.collect(Collectors.toList());
+		return new ArrayList<>(contacts);
 	}
 
 	public Optional<Contact> findByName(String name) {

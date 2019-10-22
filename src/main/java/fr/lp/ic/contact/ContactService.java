@@ -18,8 +18,8 @@ import java.util.stream.Collectors;
  */
 public class ContactService {
 
-    public static final int MIN_NAME_CHARS = 3;
-    public static final int MAX_NAME_CHARS = 40;
+    private static final int MIN_NAME_CHARS = 3;
+    private static final int MAX_NAME_CHARS = 40;
     // Ne pas bouger
     private IContactDao contactDao = new ContactDaoImpl();
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -34,11 +34,11 @@ public class ContactService {
         try {
             return executorService.submit(() ->
                     contactDao.findAll()
-                        .stream()
-                        .map(Contact::getName)
-                        .collect(Collectors.toList())
-            ).get(4, TimeUnit.SECONDS);
-        }catch (InterruptedException | TimeoutException | ExecutionException e){
+                            .stream()
+                            .map(Contact::getName)
+                            .collect(Collectors.toList())
+            ).get(3, TimeUnit.SECONDS);
+        } catch (InterruptedException | TimeoutException | ExecutionException e) {
             throw new IllegalStateException("Search is too long please limit your search");
         }
     }
@@ -49,7 +49,7 @@ public class ContactService {
      * @return nombre de contact
      */
     public int count() {
-        return 0;
+        return contactDao.findAll().size();
     }
 
     /**
@@ -100,6 +100,30 @@ public class ContactService {
      */
     public void updateContact(String name, String newName, String phoneNumber, String email)
             throws ContactException, ContactNotFoundException {
+
+        if (name == null) {
+            throw new IllegalArgumentException("name can't be null");
+        }
+
+        if (newName == null || newName.length() < 3 || newName.length() > 40) {
+            throw new IllegalArgumentException("newName should be ok");
+        }
+
+        //Raise an exception if contactName not exists
+        contactDao.findByName(name)
+                .orElseThrow(ContactNotFoundException::new);
+
+        //If name has changed, check for conflicts
+        if (!name.equalsIgnoreCase(newName) && contactDao.findByName(newName).isPresent()) {
+            throw new ContactException();
+        }
+
+        Contact contact = new Contact();
+        contact.setName(newName);
+        contact.setPhone(phoneNumber);
+        contact.setEmail(email);
+
+        contactDao.update(name, contact);
 
     }
 

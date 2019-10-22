@@ -1,14 +1,15 @@
 package fr.lp.ic.contact;
 
 import fr.lp.ic.contact.exception.ContactException;
+import fr.lp.ic.contact.exception.ContactNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 
 
 public class ContactServiceTest {
 
-    public static final String VALID_PHONE_NUMBER = "0225457845";
-    public static final String VALID_EMAIL = "test@yopmail.com";
+    private static final String VALID_PHONE_NUMBER = "0225457845";
+    private static final String VALID_EMAIL = "test@yopmail.com";
     private ContactService service = new ContactService();
 
     @Test(expected = IllegalArgumentException.class)
@@ -17,11 +18,11 @@ public class ContactServiceTest {
     }
 
     @Test
-    public void shouldFailedIfNameLessThanThreeSyntax() throws ContactException {
+    public void shouldFailedIfNameLessThanThreeSyntax() {
         try {
             service.newContact("ab", VALID_PHONE_NUMBER, VALID_EMAIL);
             Assert.fail("Should have IllegalArgumentException");
-        }catch (Throwable e){
+        } catch (Throwable e) {
             Assert.assertEquals(IllegalArgumentException.class, e.getClass());
         }
     }
@@ -47,4 +48,31 @@ public class ContactServiceTest {
     public void shouldInsertValidContact() throws ContactException {
         service.newContact("Arnaud", VALID_PHONE_NUMBER, VALID_EMAIL);
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldRaiseExceptionIfNameIsNull() throws ContactNotFoundException {
+        service.deleteContact(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldRaiseExceptionIfNameIsNullUpdate() throws ContactNotFoundException, ContactException {
+        service.updateContact(null, "", "", "");
+    }
+
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldRaiseExceptionIfNewNameLengthIsShort() throws ContactNotFoundException, ContactException {
+        service.updateContact("Arnaud", "ab", "", "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldRaiseExceptionIfNewNameLengthIsTooLong() throws ContactNotFoundException, ContactException {
+        service.updateContact("Arnaud", "abcdefghijklmnopqrstuvwxyzabcdefghaijklma", "", "");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void shouldRaiseExceptionIfNewNameIsNull() throws ContactNotFoundException, ContactException {
+        service.updateContact("Arnaud", null, "", "");
+    }
+
 }
