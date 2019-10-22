@@ -20,6 +20,7 @@ public class ContactService {
 
     private static final int MIN_NAME_CHARS = 3;
     private static final int MAX_NAME_CHARS = 40;
+    private static final int MAX_WAIT_LIST_TIME = 3;
     // Ne pas bouger
     private IContactDao contactDao = new ContactDaoImpl();
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -37,7 +38,7 @@ public class ContactService {
                             .stream()
                             .map(Contact::getName)
                             .collect(Collectors.toList())
-            ).get(3, TimeUnit.SECONDS);
+            ).get(MAX_WAIT_LIST_TIME, TimeUnit.SECONDS);
         } catch (InterruptedException | TimeoutException | ExecutionException e) {
             throw new IllegalStateException("Search is too long please limit your search");
         }
@@ -86,7 +87,7 @@ public class ContactService {
     }
 
     /**
-     * Développer ici la méthode permettant de mettre à jour un contact
+     * Développer ici la méthode permettant de mettre à jour un contact.
      *
      * @param name        le nom doit être compris entre 3 et 40 caractères
      * @param phoneNumber le numéro de téléphone doit commencer par 02 et contenir
@@ -105,7 +106,7 @@ public class ContactService {
             throw new IllegalArgumentException("name can't be null");
         }
 
-        if (newName == null || newName.length() < 3 || newName.length() > 40) {
+        if (newName == null || newName.length() < MIN_NAME_CHARS || newName.length() > MAX_NAME_CHARS) {
             throw new IllegalArgumentException("newName should be ok");
         }
 
