@@ -19,7 +19,10 @@ public class ContactServiceMockTest extends BaseMockTest {
 
     private static final String VALID_PHONE_NUMBER = "0254414512";
     private static final String VALID_EMAIL = "test@yopmail.com";
+
     @TestSubject
+
+
     private ContactService contactService = new ContactService();
 
     @Mock
@@ -29,7 +32,7 @@ public class ContactServiceMockTest extends BaseMockTest {
     public void shouldFailIfNameAlreadyExists() throws ContactException {
         String name = "Arnaud";
         // Enregistrement des comportements
-        expect(contactDao.findByName(name))
+        EasyMock.expect(contactDao.findByName(name))
                 .andReturn(Optional.of(new Contact()));
 
         // Fin de l'enregistrement
@@ -53,6 +56,7 @@ public class ContactServiceMockTest extends BaseMockTest {
         replayAll();
 
         contactService.newContact(name, VALID_PHONE_NUMBER, VALID_EMAIL);
+
         Contact value = capturedContact.getValue();
         Assert.assertEquals(name, value.getName());
         Assert.assertEquals("Phone error", VALID_PHONE_NUMBER, value.getPhone());
@@ -154,7 +158,27 @@ public class ContactServiceMockTest extends BaseMockTest {
         Assert.assertEquals(newName, value.getName());
         Assert.assertEquals(VALID_PHONE_NUMBER, value.getPhone());
         Assert.assertEquals(VALID_EMAIL, value.getEmail());
-
     }
+
+
+    @Test(expected = ContactNotFoundException.class)
+    public void shouldRaiseErrorUpdate() throws ContactNotFoundException, ContactException {
+        String name = "Arnaud";
+        String newName = "George";
+        expect(contactDao.findByName(name)).andReturn(Optional.of(new Contact()));
+        expect(contactDao.findByName(newName)).andReturn(Optional.empty());
+        Capture<Contact> captured = newCapture();
+        expect(contactDao.update(EasyMock.eq(name), capture(captured))).andReturn(true);
+
+        replayAll();
+
+        contactService.updateContact(name, newName, VALID_PHONE_NUMBER, VALID_EMAIL);
+
+        Contact value = captured.getValue();
+        Assert.assertEquals(newName, value.getName());
+        Assert.assertEquals(VALID_PHONE_NUMBER, value.getPhone());
+        Assert.assertEquals(VALID_EMAIL, value.getEmail());
+    }
+
 
 }
