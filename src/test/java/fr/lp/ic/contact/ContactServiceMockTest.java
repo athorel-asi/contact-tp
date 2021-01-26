@@ -9,12 +9,14 @@ import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Ignore
 public class ContactServiceMockTest extends BaseMockTest {
 
     private static final String VALID_PHONE_NUMBER = "0254414512";
