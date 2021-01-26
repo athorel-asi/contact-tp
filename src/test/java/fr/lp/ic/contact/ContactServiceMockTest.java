@@ -160,5 +160,5 @@ public class ContactServiceMockTest extends BaseMockTest {
         Assert.assertEquals(VALID_PHONE_NUMBER, value.getPhone());
         Assert.assertEquals(VALID_EMAIL, value.getEmail());
     }
-    
+
 }
