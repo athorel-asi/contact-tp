@@ -4,19 +4,23 @@ import fr.lp.ic.contact.dao.IContactDao;
 import fr.lp.ic.contact.exception.ContactException;
 import fr.lp.ic.contact.exception.ContactNotFoundException;
 import fr.lp.ic.contact.model.Contact;
+import org.awaitility.Awaitility;
 import org.easymock.Capture;
 import org.easymock.EasyMock;
 import org.easymock.Mock;
 import org.easymock.TestSubject;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.Callable;
 
-public class ContactServiceMockTest extends BaseMockTest {
+public class ContactServiceMockTest extends AbstractMockTest {
 
     private static final String VALID_PHONE_NUMBER = "0254414512";
     private static final String VALID_EMAIL = "test@yopmail.com";
@@ -107,16 +111,15 @@ public class ContactServiceMockTest extends BaseMockTest {
     public void shouldCancelCallTimeout() {
 
         //Record
-        EasyMock.expect(contactDao.findAll()).andAnswer(() -> {
-            Thread.sleep(3100);
-            return new ArrayList<>();
-        });
+        EasyMock.expect(contactDao.findAll()).andAnswer(
+                () -> Awaitility.await()
+                        .atLeast(Duration.of(3100, ChronoUnit.MILLIS))
+                        .until((Callable<List<Contact>>) ArrayList::new, Objects::nonNull));
         //End Record
         EasyMock.replay(contactDao);
         //Test
         List<String> strings = contactService.listAll();
         Assert.assertEquals(0, strings.size());
-
     }
 
     //

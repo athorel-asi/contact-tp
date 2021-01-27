@@ -51,10 +51,7 @@ public class ContactDaoImpl implements IContactDao {
 	@Override
 	public boolean delete(String name) {
 		Optional<Contact> foundContact = findWithName(name);
-		if(!foundContact.isPresent()) {
-		 return	contacts.remove(foundContact.get());
-		}
-		return false;
+		return foundContact.map(contact -> contacts.remove(contact)).orElse(false);
 	}
 	
 }

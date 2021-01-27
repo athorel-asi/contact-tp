@@ -2,10 +2,15 @@ package fr.lp.ic.contact;
 
 import fr.lp.ic.contact.dao.ContactDaoImpl;
 import fr.lp.ic.contact.dao.IContactDao;
+import fr.lp.ic.contact.evaluators.IEvaluator;
+import fr.lp.ic.contact.evaluators.TitiEvaluator;
+import fr.lp.ic.contact.evaluators.TotoEvaluator;
 import fr.lp.ic.contact.exception.ContactException;
 import fr.lp.ic.contact.exception.ContactNotFoundException;
 import fr.lp.ic.contact.model.Contact;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
@@ -26,7 +31,6 @@ public class ContactService {
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
 
 
-
     /**
      * Développer ici la méthode qui retourne une liste de contact, trié par le nom
      *
@@ -40,7 +44,10 @@ public class ContactService {
                             .map(Contact::getName)
                             .collect(Collectors.toList())
             ).get(MAX_WAIT_LIST_TIME, TimeUnit.SECONDS);
-        } catch (InterruptedException | TimeoutException | ExecutionException e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Search is too long please limit your search");
+        } catch (TimeoutException | ExecutionException e) {
             throw new IllegalStateException("Search is too long please limit your search");
         }
     }
@@ -112,15 +119,13 @@ public class ContactService {
         }
 
         //Raise an exception if contactName not exists
-        contactDao.findByName(name)
-                .orElseThrow(ContactNotFoundException::new);
+        Contact contact = contactDao.findByName(name).orElseThrow(ContactNotFoundException::new);
 
         //If name has changed, check for conflicts
         if (!name.equalsIgnoreCase(newName) && contactDao.findByName(newName).isPresent()) {
             throw new ContactException();
         }
 
-        Contact contact = new Contact();
         contact.setName(newName);
         contact.setPhone(phoneNumber);
         contact.setEmail(email);
@@ -141,10 +146,6 @@ public class ContactService {
         if (name == null) {
             throw new IllegalArgumentException("name can't be null");
         }
-        //Call Java 8
-        //contactDao.findByName(name)
-        //      .orElseThrow(ContactNotFoundException::new);
-
         //Call Avant Java 8
         Optional<Contact> byName = contactDao.findByName(name);
         if (!byName.isPresent()) {
@@ -152,6 +153,37 @@ public class ContactService {
         }
         //delete
         contactDao.delete(name);
+    }
+
+
+    public String testComplexity(String a, String b) {
+
+        if (a != null && b != null) {
+            return handleCases(a, b);
+        }
+
+        return a + b;
+    }
+
+    @NotNull
+    private String handleCases(String a, String b) {
+        List<IEvaluator> evaluators = Arrays.asList(new TitiEvaluator(), new TotoEvaluator());
+        for (IEvaluator evaluator : evaluators) {
+            if (evaluator.accept(a)) {
+                return evaluator.evaluate(b);
+            }
+        }
+        return "";
+    }
+
+    @NotNull
+    private String limitToLength(String b, int length) {
+        return (b.length() > length) ? b.substring(0, length - 1) : b;
+    }
+
+    private String maMethode(String value) {
+
+        return maMethode(value);
     }
 
 }

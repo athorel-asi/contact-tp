@@ -46,7 +46,9 @@ public class ContactServiceTest {
 
     @Test
     public void shouldInsertValidContact() throws ContactException {
+        long count = service.listAll().size();
         service.newContact("Arnaud", VALID_PHONE_NUMBER, VALID_EMAIL);
+        Assert.assertEquals(count + 1, service.listAll().size());
     }
 
     @Test(expected = IllegalArgumentException.class)

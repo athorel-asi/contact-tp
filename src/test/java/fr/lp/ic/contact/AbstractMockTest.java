@@ -3,7 +3,7 @@ package fr.lp.ic.contact;
 import org.easymock.*;
 import org.junit.Rule;
 
-public class BaseMockTest extends EasyMockSupport {
+public abstract class AbstractMockTest extends EasyMockSupport {
 
     @Rule
     public EasyMockRule rule = new EasyMockRule(this);
